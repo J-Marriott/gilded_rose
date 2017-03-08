@@ -1,4 +1,5 @@
 class BackstagePass < Item
+
   def quality_change
     amount = case
       when @sell_in > 10 then 1
@@ -17,4 +18,5 @@ class BackstagePass < Item
     @quality = 50 if @quality > 50
     @quality = 0  if @quality < 0
   end
+  
 end

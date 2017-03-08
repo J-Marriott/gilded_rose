@@ -1,4 +1,5 @@
 class Sulfura < Item
+
   def quality_change
   end
 
@@ -7,4 +8,5 @@ class Sulfura < Item
 
   def limit_max_or_min_quality
   end
+  
 end
