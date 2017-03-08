@@ -2,18 +2,20 @@ class GildedRose
   MAX_QUALITY = 50
   MIN_QUALITY = 0
   SELL_IN_MIN = 0
-  SPECIAL_ITEMS = ["Backstage passes", "Aged Brie", "Conjured", "Sulfuras"]
+  SPECIAL = ['Backstage passes', 'Aged Brie', 'Conjured'].freeze
+  LEGENDARY = ['Sulfuras'].freeze
 
   def initialize(items)
     @items = items
   end
 
-  def update_quality()
+  def update_quality
     @items.each do |item|
-      quality_change_backstage(item) if item.name[0..15] == "Backstage passes"
-      quality_change_brie(item)      if item.name == "Aged Brie"
-      quality_change_conjured(item)  if item.name[0..7] == "Conjured"
-      quality_change(item) unless SPECIAL_ITEMS.any? {|i| item.name.include? i}
+      next if LEGENDARY.any? { |i| item.name.include? i }
+      quality_change_backstage(item) if item.name[0..15] == 'Backstage passes'
+      quality_change_brie(item)      if item.name == 'Aged Brie'
+      quality_change_conjured(item)  if item.name[0..7] == 'Conjured'
+      quality_change(item) unless SPECIAL.any? { |i| item.name.include? i }
       max_or_min_quality(item)
       reduce_sell_in(item)
     end
@@ -22,7 +24,7 @@ class GildedRose
   private
 
   def reduce_sell_in(item)
-    item.sell_in -= 1 unless item.name[0..7] == "Sulfuras"
+    item.sell_in -= 1 unless item.name[0..7] == 'Sulfuras'
   end
 
   def quality_change_brie(item)
@@ -30,13 +32,13 @@ class GildedRose
   end
 
   def quality_change_backstage(item)
-    result = case
-      when item.sell_in > 10 then 1
-      when item.sell_in > 5 then 2
-      when item.sell_in > 0 then 3
-      when item.sell_in == 0 then -item.quality
+    amount = case
+     when item.sell_in > 10 then 1
+     when item.sell_in > 5 then 2
+     when item.sell_in > 0 then 3
+     when item.sell_in == 0 then -item.quality
     end
-    item.quality += result
+    item.quality += amount
   end
 
   def quality_change_conjured(item)
