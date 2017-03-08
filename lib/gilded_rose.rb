@@ -1,7 +1,6 @@
 class GildedRose
   MAX_QUALITY = 50
   MIN_QUALITY = 0
-  SELL_IN_MIN = 0
   SPECIAL = ['Backstage passes', 'Aged Brie', 'Conjured'].freeze
   LEGENDARY = ['Sulfuras'].freeze
 
@@ -36,7 +35,7 @@ class GildedRose
      when item.sell_in > 10 then 1
      when item.sell_in > 5 then 2
      when item.sell_in > 0 then 3
-     when item.sell_in == 0 then -item.quality
+     when item.sell_in <= 0 then -item.quality
     end
     item.quality += amount
   end
