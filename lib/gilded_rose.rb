@@ -9,29 +9,26 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      quality_change(item)
-      item.sell_in -= 1 unless item.name[0..7] == "Sulfuras"
+      if item.name[0..15] == "Backstage passes"
+        item.quality += quality_change_backstage_passes(item)
+      elsif item.name == "Aged Brie"
+        item.quality += quality_change_brie(item)
+      elsif item.name[0..7] == "Conjured"
+        item.quality += quality_change_conjured(item)
+      elsif item.name[0..7] == "Sulfuras"
+        item.quality = item.quality
+      else
+        item.quality += quality_change_regular(item)
+      end
+      max_or_min_quality(item)
+      reduce_sell_in(item)
     end
   end
 
   private
 
-  def quality_change(item)
-    if item.name == "Backstage passes to a TAFKAL80ETC concert"
-      item.quality += quality_change_backstage_passes(item)
-      max_or_min_quality(item)
-    elsif item.name == "Aged Brie"
-      item.quality += quality_change_brie(item)
-      max_or_min_quality(item)
-    elsif item.name[0..7] == "Conjured"
-      item.quality += quality_change_conjured(item)
-      max_or_min_quality(item)
-    elsif item.name[0..7] == "Sulfuras"
-      item.quality = item.quality
-    else
-      item.quality += quality_change_regular(item)
-      max_or_min_quality(item)
-    end
+  def reduce_sell_in(item)
+    item.sell_in -= 1 unless item.name[0..7] == "Sulfuras"
   end
 
   def quality_change_brie(item)
