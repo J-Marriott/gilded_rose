@@ -14,7 +14,7 @@ class GildedRose
       next if LEGENDARY.any? { |i| item.name.include? i }
       quality_change_backstage(item) if item.name[0..15] == 'Backstage passes'
       quality_change_brie(item)      if item.name == 'Aged Brie'
-      quality_change_conjured(item)  if item.name[0..7] == 'Conjured'
+      2.times {quality_change(item)} if item.name[0..7] == 'Conjured'
       quality_change(item) unless SPECIAL.any? { |i| item.name.include? i }
       limit_max_or_min_quality(item)
       reduce_sell_in(item)
@@ -39,10 +39,6 @@ class GildedRose
       when item.sell_in <= 0 then -item.quality
     end
     item.quality += amount
-  end
-
-  def quality_change_conjured(item)
-    item.quality -= ADJUST * 2 if item.sell_in > 0
   end
 
   def quality_change(item)
